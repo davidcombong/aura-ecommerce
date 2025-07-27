@@ -1,21 +1,15 @@
 <?php 
-// Include header
 include_once('includes/header.php');
 
-// Initialize product variable
 $product = null;
 
-// Check if a product ID is provided in the URL
 if (isset($_GET['id'])) {
     $product_id = mysqli_real_escape_string($conn, $_GET['id']);
-    
-    // Fetch the specific product from the database
     $sql = "SELECT p.*, c.category_name, b.brand_name 
             FROM products p 
             LEFT JOIN categories c ON p.category_id = c.category_id 
             LEFT JOIN brands b ON p.brand_id = b.brand_id 
             WHERE p.product_id = ?";
-            
     if ($stmt = mysqli_prepare($conn, $sql)) {
         mysqli_stmt_bind_param($stmt, "i", $product_id);
         mysqli_stmt_execute($stmt);
